@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html ng-app="Warehouse">
+    <head>
+        <title>Discount Ascii Warehouse</title>
+
+        <link href="css/angular-busy.css" rel="stylesheet" /> 
+        <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+        <link rel="stylesheet" type="text/css" href="css/warehouse.css">
+        <script type="text/javascript" src="scripts/lib/angular.js"></script>
+        <script type="text/javascript" src="scripts/controllers.js"></script>
+        <script type="text/javascript" src="scripts/directives.js"></script>
+        <script type="text/javascript" src="scripts/filters.js"></script>    
+        <script type="text/javascript" src="scripts/lib/ui-bootstrap-tpls.js"></script>
+        <script type="text/javascript" src="scripts/lib/angular-animate.js"></script>
+        <script type="text/javascript" src="scripts/lib/angular-busy.js"></script>
+        <script type="text/javascript">
+                var app = angular.module("Warehouse", ["Warehouse.Controllers", "Warehouse.Filters", "Warehouse.Directives", "ui.bootstrap", "ngAnimate","cgBusy"]);   
+        </script>      
+    </head>
+    <body ng-controller="productsCtrl">
+    <div class="container" cg-busy="{promise:promise,templateUrl:templateUrl,message:message,backdrop:backdrop,delay:delay,minDuration:minDuration}">
+        <div class="row">
+            <div class="col-sm-12 col-md-12">
+            <header>
+                <h1>Discount Ascii Warehouse</h1>
+
+                <p>Here you're sure to find a bargain on some of the finest ascii available to purchase. Be sure to peruse our selection of ascii faces in an exciting range of sizes and prices.</p>
+
+                <p>But first, a word from our sponsors:</p> <script>document.write('<img class="ad" src="/ad/?r=' + Math.floor(Math.random()*1000) + '"/>');</script>
+            </header>
+
+            <section class="products">
+
+                <div>
+                    <h3>Our Awesome Products List!</h3>
+                    <label for="sortOption">Sort By:</label>   
+                    <select name="sortOption" ng-change="sortProducts()" ng-model="sortBy">
+                        <option>price</option>
+                        <option>size</option>
+                        <option>id</option> 
+                    </select>
+                </div>
+
+                <div class="productsList" scrolled="getNextProducts()"  >
+                <ul class="thumbnail-list">
+                    <li ng-repeat="item in products">    
+                      <div class="smiley">
+                           <ng-switch on="item.id">
+                              <img ng-switch-when="z-sponsor" class="ad" src="{{item.face}}"/>
+                              <p class="sm" ng-switch-default  ng-style="{'font-size': {{item.size}}+'px'}">{{item.face}}</p>
+                            </ng-switch>     
+                      </div>
+                      <h4>{{item.id}}</h4>
+                      <div class="product-price">
+                        <span class="normal-price" ng-hide="item.id == 'z-sponsor'">{{item.price | moneyFormat}}</span>
+                        <button ng-hide="item.id == 'z-sponsor'" type="button" class="btn btn-default navbar-btn buy">Buy Smiley</button>
+                      </div>   
+                    </li>
+                </ul>
+                </div>
+            </section>    
+            </div>
+                
+        </div>
+        
+    </div>
+    </body>
+</html>

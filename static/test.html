@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head>
+	<title>NDJ Man OMG!</title>
+	 <script type="text/javascript" src="scripts/angular.js"></script>
+	 <script type="text/javascript">
+	 		var app = angular.module("myApp", []);
+
+	 		app.controller("MyCtrl", function($scope, $http) {
+
+	 			$scope.products = null;
+
+	 			$scope.getProducts = function() {
+	 				$http({method: "GET",
+	 								url: "/api/products?limit=5",
+	 								transformResponse: $scope.parseNDJ
+	 				}).success(function (data) {
+	 					$scope.products = data;
+	 					$scope.yeah = "Hello!";
+	 				});
+
+
+	 			};
+
+	 			//parse new-line delimited json transformResponse function
+	 			$scope.parseNDJ = function(data) {
+	 									//desperate measure :/
+	 									var parsedData = data.split("\n");
+										//remove empty row	 		
+	 									parsedData.pop();
+
+	 									//parse new-line json to object
+	 									var result = "["	
+	 									var i = 0;
+
+										parsedData.forEach(function(item) {
+											result = result + item;
+											if (i < parsedData.length-1) {
+												result = result + ",";
+											}
+											i++;	
+										});
+
+										result = result + "]";	 									
+									    //convert to json object
+	 									returnVal = JSON.parse(result);
+	 									return returnVal;							
+	 								}	
+	 			});
+
+	 </script>
+</head>
+<body ng-controller="MyCtrl">
+		<button ng-click="getProducts()">Click Me!</button>
+
+		<ul>	
+				<li ng-repeat="item in products">{{item.face}}</li>
+		</ul>	
+
+
+</body.0>
+</html>
